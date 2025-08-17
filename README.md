@@ -36,3 +36,43 @@ Follow the steps within the Colab notebook:
 ### Step 1: Install Dependencies
 ```python
 !pip install scikit-learn pandas
+### Step 2: Clone vibAnalysis and Patch va.py
+
+This step will clone the vibAnalysis repository and apply a necessary patch to va.py for compatibility with modern scikit-learn versions (specifically, replacing n_iter with max_iter in ARDRegression calls).
+
+import os
+import re
+
+# Clone the repository
+!git clone https://github.com/teixeirafilipe/vibAnalysis.git /content/vibAnalysis-master
+
+# Define the path to va.py within the cloned directory
+va_script_path = "/content/vibAnalysis-master/va.py"
+
+print(f"Cloned vibAnalysis into /content/vibAnalysis-master/. Now patching '{va_script_path}' for scikit-learn compatibility...")
+
+# Check if va.py exists at the expected path after cloning
+if not os.path.exists(va_script_path):
+    raise FileNotFoundError(f"Error: va.py not found at {va_script_path} after cloning. Check clone URL or path.")
+
+# Read the content of va.py
+with open(va_script_path, 'r', encoding='utf-8') as f:
+    va_content = f.read()
+
+# Replace 'n_iter' with 'max_iter' in the ARDRegression call
+patched_content = re.sub(
+    r'(sklm\.ARDRegression\([^)]*compute_score=True,)\s*n_iter=(\d+)',
+    r'\1max_iter=\2',
+    va_content
+)
+
+if patched_content == va_content:
+    print("Warning: The 'n_iter' -> 'max_iter' patch did not find the expected line in va.py. It might already be patched or the format is different.")
+else:
+    print("Patch applied successfully: 'n_iter' replaced with 'max_iter' in ARDRegression call.")
+
+# Write the patched content back to va.py
+with open(va_script_path, 'w', encoding='utf-8') as f:
+    f.write(patched_content)
+
+print(f"Patched '{va_script_path}' saved.")
