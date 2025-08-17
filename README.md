@@ -1,4 +1,3 @@
-    
 # ORCA Vibrational Mode Analysis & IR Intensity Re-mapping Tool
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue.svg)
@@ -37,17 +36,13 @@ Follow the steps within the Colab notebook:
 ### Step 1: Install Dependencies
 ```python
 !pip install scikit-learn pandas
+```
 
-  
+### Step 2: Clone `vibAnalysis` and Patch `va.py`
 
-Step 2: Clone vibAnalysis and Patch va.py
+This step will clone the `vibAnalysis` repository and apply a necessary patch to `va.py` for compatibility with modern `scikit-learn` versions (specifically, replacing `n_iter` with `max_iter` in `ARDRegression` calls).
 
-This step will clone the vibAnalysis repository and apply a necessary patch to va.py for compatibility with modern scikit-learn versions (specifically, replacing n_iter with max_iter in ARDRegression calls).
-code Python
-IGNORE_WHEN_COPYING_START
-IGNORE_WHEN_COPYING_END
-
-    
+```python
 import os
 import re
 
@@ -84,17 +79,13 @@ with open(va_script_path, 'w', encoding='utf-8') as f:
     f.write(patched_content)
 
 print(f"Patched '{va_script_path}' saved.")
+```
 
-  
+### Step 3: Upload Your ORCA Output and Hessian Files
 
-Step 3: Upload Your ORCA Output and Hessian Files
+You'll be prompted to upload your `.out` (ORCA output with IR spectrum) and `.hess` (ORCA Hessian) files directly to the Colab environment.
 
-You'll be prompted to upload your .out (ORCA output with IR spectrum) and .hess (ORCA Hessian) files directly to the Colab environment.
-code Python
-IGNORE_WHEN_COPYING_START
-IGNORE_WHEN_COPYING_END
-
-    
+```python
 from google.colab import files
 
 print("Please upload your ORCA output file (.out):")
@@ -102,76 +93,62 @@ uploaded_out = files.upload()
 
 print("\nPlease upload your ORCA Hessian file (.hess):")
 uploaded_hess = files.upload()
+```
 
-  
+### Step 4: Run the Analysis Script
 
-Step 4: Run the Analysis Script
+Copy and paste the entire content of `orca_vib_analysis.py` (the main script in this repository) into a new Colab cell and execute it. Then, run `main()` in the next cell. The script will guide you through the analysis with interactive prompts.
 
-Copy and paste the entire content of orca_vib_analysis.py (the main script in this repository) into a new Colab cell and execute it. Then, run main() in the next cell. The script will guide you through the analysis with interactive prompts.
-code Python
-IGNORE_WHEN_COPYING_START
-IGNORE_WHEN_COPYING_END
-
-    
+```python
 # Copy the entire content of orca_vib_analysis.py here
 # ... (your Python code from orca_vib_analysis.py) ...
 
 # Then, in a new cell, run:
 main()
+```
 
-  
-
-📊 Understanding the Output
+## 📊 Understanding the Output
 
 The script generates a Pandas DataFrame with the following columns:
 
-    Mode: The vibrational mode number.
-
-    Freq_cm-1: The vibrational frequency in wavenumbers (cm⁻¹).
-
-    IR_Intensity_km/mol: The IR intensity in km/mol, directly taken from your ORCA .out file. This is the most accurate intensity value.
-
-    BOND_Contribs, ANGLE_Contribs, OUT_Contribs, TORSION_Contribs: These columns show the number of individual internal coordinates of that type contributing to the mode, as identified by vibAnalysis. This gives a quick overview of the nature of the vibration (e.g., is it predominantly bond stretches or angle bends?).
-
-    Top_Contributions: This is a string listing the top 2 (by default) internal coordinate contributions. Each entry is formatted as TYPE(Atoms):Weight, where:
-
-        TYPE: The type of internal coordinate (e.g., BOND, ANGLE, TORSION, OUT).
-
-        Atoms: The specific atoms involved in that coordinate (e.g., C1 H2 for a bond between Carbon 1 and Hydrogen 2, or H2 C1 H3 for an angle involving these atoms).
-
-        Weight: The normalized contribution weight (from 0.00 to 1.00), indicating how much that specific coordinate contributes to the overall vibration.
+*   **Mode:** The vibrational mode number.
+*   **Freq_cm-1:** The vibrational frequency in wavenumbers (cm⁻¹).
+*   **IR_Intensity_km/mol:** The IR intensity in km/mol, directly taken from your ORCA `.out` file. This is the most accurate intensity value.
+*   **BOND_Contribs, ANGLE_Contribs, OUT_Contribs, TORSION_Contribs:** These columns show the *number* of individual internal coordinates of that type contributing to the mode, as identified by `vibAnalysis`. This gives a quick overview of the nature of the vibration (e.g., is it predominantly bond stretches or angle bends?).
+*   **Top_Contributions:** This is a string listing the top 2 (by default) internal coordinate contributions. Each entry is formatted as `TYPE(Atoms):Weight`, where:
+    *   `TYPE`: The type of internal coordinate (e.g., BOND, ANGLE, TORSION, OUT).
+    *   `Atoms`: The specific atoms involved in that coordinate (e.g., `C1 H2` for a bond between Carbon 1 and Hydrogen 2, or `H2 C1 H3` for an angle involving these atoms).
+    *   `Weight`: The normalized contribution weight (from 0.00 to 1.00), indicating how much that specific coordinate contributes to the overall vibration.
 
 By examining these columns, you can gain a deep understanding of your molecule's vibrational spectrum.
-⚠️ Important Notes
 
-    vibAnalysis Script (va.py): This script relies on va.py from the vibAnalysis package. The provided setup includes cloning and patching it for compatibility.
+## ⚠️ Important Notes
 
-    ORCA Output Format: The parsing functions are designed for typical ORCA output. Minor variations in ORCA versions might require slight adjustments to the regular expressions, though the provided parse_orca_ir is robust based on your successful original.
+*   **`vibAnalysis` Script (`va.py`):** This script relies on `va.py` from the `vibAnalysis` package. The provided setup includes cloning and patching it for compatibility.
+*   **ORCA Output Format:** The parsing functions are designed for typical ORCA output. Minor variations in ORCA versions might require slight adjustments to the regular expressions, though the provided `parse_orca_ir` is robust based on your successful original.
+*   **Frequency Matching Tolerance:** The script matches ORCA IR frequencies to `vibAnalysis` frequencies with a small tolerance (`0.05 cm-1`). This is generally robust, but very close frequencies (e.g., degenerate modes) might require careful inspection.
+*   **Atom Naming:** Atom labels (e.g., `C1`, `H2`) come from your ORCA input. Ensure you know your atom numbering.
+*   **Python Version:** Developed and tested with Python 3.x.
 
-    Frequency Matching Tolerance: The script matches ORCA IR frequencies to vibAnalysis frequencies with a small tolerance (0.05 cm-1). This is generally robust, but very close frequencies (e.g., degenerate modes) might require careful inspection.
-
-    Atom Naming: Atom labels (e.g., C1, H2) come from your ORCA input. Ensure you know your atom numbering.
-
-    Python Version: Developed and tested with Python 3.x.
-
-🎓 For Students
+## 🎓 For Students
 
 This tool can be incredibly useful for:
 
-    Understanding Vibrations: Moving beyond simple "stretch" or "bend" labels to see the exact atomic motions.
-
-    IR Spectral Interpretation: Assigning peaks in an experimental IR spectrum to specific vibrational modes and understanding their origin.
-
-    Project Work: Generating professional-looking tables for reports and presentations.
+*   **Understanding Vibrations:** Moving beyond simple "stretch" or "bend" labels to see the exact atomic motions.
+*   **IR Spectral Interpretation:** Assigning peaks in an experimental IR spectrum to specific vibrational modes and understanding their origin.
+*   **Project Work:** Generating professional-looking tables for reports and presentations.
 
 Experiment with different filtering options and output formats to see what works best for your analysis!
-🤝 Contributing
+
+## 🤝 Contributing
 
 Contributions are welcome! If you find a bug, have a feature request, or want to contribute code, please open an issue or submit a pull request.
-📜 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-🙏 Credits
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Credits
 
 This script was adapted and enhanced from an original code provided by the user, aiming to make it more accessible and robust for educational purposes and Google Colab integration.
 Special thanks to the developers of ORCA and vibAnalysis (VMARD) for their powerful tools.
