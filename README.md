@@ -10,6 +10,15 @@
 This project provides a Python-based tool designed to enhance and streamline the analysis of vibrational modes calculated by **ORCA** quantum chemistry software, specifically by integrating it with the capabilities of the external **`vibAnalysis` (VMARD)** script.
 
 Quantum chemistry calculations yield vibrational frequencies and IR intensities, crucial for comparing with experimental IR spectra. While `vibAnalysis` excels at decomposing these vibrations into contributions from internal coordinates (bonds, angles, torsions), its IR intensities may not always match the higher precision values directly from the ORCA output. This tool bridges that gap.
+## 📝 How to Cite
+
+If you use the ORCA Vibrational Mode Analysis & IR Intensity Re-mapping Tool in your research, please cite it using its Zenodo DOI. This ensures proper attribution and helps others find and reproduce your work.
+
+*May, Abdelghani (2024). ORCA Vibrational Mode Analysis & IR Intensity Re-mapping Tool.*
+<a href="https://doi.org/10.5281/zenodo.16891506"><img src="https://zenodo.org/badge/1039524480.svg" alt="DOI"></a>
+
+---
+**Note on vibAnalysis:** This tool utilizes the external `vibAnalysis` script. If its specific internal coordinate decomposition features are central to your work, consider acknowledging or citing the original `vibAnalysis` project as well.
 
 ## ✨ Key Features
 
@@ -152,3 +161,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 This script was adapted and enhanced from an original code provided by the user, aiming to make it more accessible and robust for educational purposes and Google Colab integration.
 Special thanks to the developers of ORCA and vibAnalysis (VMARD) for their powerful tools.
+
