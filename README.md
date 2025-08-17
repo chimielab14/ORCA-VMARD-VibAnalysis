@@ -14,7 +14,7 @@ Quantum chemistry calculations yield vibrational frequencies and IR intensities,
 
 If you use the ORCA Vibrational Mode Analysis & IR Intensity Re-mapping Tool in your research, please cite it using its Zenodo DOI. This ensures proper attribution and helps others find and reproduce your work.
 
-*May, Abdelghani (2024). ORCA Vibrational Mode Analysis & IR Intensity Re-mapping Tool.*
+*May, Abdelghani (2025). ORCA Vibrational Mode Analysis & IR Intensity Re-mapping Tool.*
 <a href="https://doi.org/10.5281/zenodo.16891506"><img src="https://zenodo.org/badge/1039524480.svg" alt="DOI"></a>
 
 ---
@@ -161,4 +161,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 This script was adapted and enhanced from an original code provided by the user, aiming to make it more accessible and robust for educational purposes and Google Colab integration.
 Special thanks to the developers of ORCA and vibAnalysis (VMARD) for their powerful tools.
+
 
